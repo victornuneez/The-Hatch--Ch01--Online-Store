@@ -4,11 +4,11 @@ import mongoose from "mongoose";
 // Definimos el esquema de la collection Products
 const productSchema = new mongoose.Schema({
     
-    name: { type: String, required: true, trim: true },     // trim limpia los espacios que pueda enviar el usuario
-    description: { type: String, default: ''},
+    name: { type: String, required: true, trim: true, unique: true },     // trim limpia los espacios que pueda enviar el usuario
+    description: { type: String, default: '' },
     price: { type: Number, required: true, min: 0 },        // Con min 0 evitamos que por error se defina un precio negativo.
     stock: { type: Number, required: true, min: 0, default: 0 },    // Asignamos un valor por defecto oon default 
-    image_path: { type: String, default: '/uploads/default-fish.png' },
+    imgURL: { type: String, default: '/uploads/default-fish.png' },
     is_active: { type: Boolean, default: true }                     // Este campo activa o desactiva a la venta el producto, sin eliminar y romper nada.
 }, 
     // Con la segunda llave activamos las configuraciones de la collection.
