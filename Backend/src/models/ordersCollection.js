@@ -37,7 +37,8 @@ const orderSchema = new mongoose.Schema({
 
     // Guardamos el momento en que se creo el pedido, y el momento de su ultima actualizacion.
 }, {
-    timestamps: true
+    timestamps: true,
+    versionKey: false // Apagamos el campo __v para controlar versiones internas, para que la collection se vea mas limpia.
 })
 
 // Creamos un objeto para crear y manipular un documento de esta collection.(Puente entre el codigo y la base de datos)
