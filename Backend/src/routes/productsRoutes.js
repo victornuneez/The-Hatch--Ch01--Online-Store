@@ -7,7 +7,7 @@ const router = Router();
 
 router.post('/', sessionVerify, verifyRole, createProduct);
 router.get('/', sessionVerify, verifyRole, getProducts);
-router.get('/:id', sessionVerify, verifyRole, getProductById);
+router.get('/edit/:id', sessionVerify, verifyRole, getProductById);
 router.put('/:id', sessionVerify, verifyRole, updateProductById);
 router.delete('/:id', sessionVerify, verifyRole, deleteProductById);
 
