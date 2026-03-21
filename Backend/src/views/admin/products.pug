@@ -1,0 +1,63 @@
+extends layout 
+
+block content
+    
+    //- Condicional para capturar los errores, y lo visualicemos.
+    if error
+    p(style="color: red; font-weight: bold;") #{error}
+
+    //- Definimos el formulario
+    form(action="/api/products" method="POST")
+
+        //- Campo para el nombre del Producto
+        div   
+            label(for="name") Name: 
+            input(type="text" name="name" required)
+
+        //- Campo para la descripcion del producto
+        div 
+            label(for="description") Description: 
+            input(type="text" name="description" required)
+        
+            //- Campo para el precio del producto
+        div 
+            label(for="price") Price: 
+            input(type="number" name="price" required)
+
+            //- Campo para el stock del producto
+        div 
+            label(for="stock") Stock: 
+            input(type="number" name="stock" required)
+
+            //- Campo para la imagen del producto
+        div 
+            label(for="imgURL") imgURL: 
+            input(type="text" name="imgURL" required)
+
+        //- Boton de enviar.
+        button(type="submit") Add Product
+
+
+    //- Creamos una lista desordenada
+    ul 
+        //- Mostramos todos los productos que tenemos en la DB en una lista.
+        each product in products
+            
+            li
+                h3= product.name
+                p Description: #{product.description}
+                p Price: $#{product.price}
+                p Stock: #{product.stock} units
+
+                //- Enlace a la pestanha de editar
+                a(href=`/api/products/edit/${product._id}`) Edit 
+
+                //- boton para eliminar un producto.
+                form(action=`/api/products/${product._id}?_method=DELETE`, method="POST" style="display:inline")
+                    button(type="submit") Delete
+
+    //- Creamos un contenedor para los botones de navegacion
+    div.navigation-admin 
+        //- Formulario sencillo para ir a ver los pedidos
+        form(action="/api/orders" method="GET")
+            button(type="submit") View Orders
