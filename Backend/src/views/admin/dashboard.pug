@@ -1,0 +1,36 @@
+extends layout 
+
+block content
+    h1 Panel de Administracion 
+    div.contenedor-pedidos 
+        h2 Lista de Pedidos Recientes 
+            
+        //- table le pide al navegador hacer una tabla
+        table 
+            thead
+                //- Realiza una fila (table row)
+                tr 
+                    //- th(table header) se ponen en negrita sola
+                    th Cliente 
+                    th Direccion 
+                    th Total 
+                    th Estado 
+                    th Accion
+            tbody 
+                each order in orders
+                    //- Aca iran los pedidos
+                    tr 
+                        td= order.buyer_name  
+                        td= order.addres  
+                        td order.$#{order.total}  
+                        td= order.status  
+                        td 
+                            //- Formulario para cambiar el estado del pedido
+                            form(action=`/api/orders/${order._id}/status?_method=PUT` method="POST")
+                                //- Opciones de estado que se puede elegir
+                                select(name="status")
+                                    option(value="preparing") Preparing
+                                    option(value="on_the_way") On the way
+                                    option(value="delivered") Delivered
+                                    //- Envia la actualizacion de estado.
+                                button(type="submit")
