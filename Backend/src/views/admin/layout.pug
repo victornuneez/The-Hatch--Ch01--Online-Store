@@ -1,0 +1,23 @@
+doctype html 
+html(lang="es")
+    head 
+        meta(charset="UTF-8")
+        title #{titulo}
+        style. 
+            body { font-family: Arial; background: #f0f8ff; margin: 0; }
+            nav { background: #2c3e50; padding: 10px; color: white; }
+            nav a { color: white; margin-right: 15px; text-decoration: none }
+            .container { padding: 20px; }
+            table { width: 100%; background: white; border-collapse: collapse; }
+            th, td { border: 1px solid #ddd; padding: 8px; }
+
+    body 
+        //- Este menu aparecera en todas las paginas automaticamente
+        nav 
+            a(href="/api/orders") Orders
+            a(href="/api/products") Products
+            a(href="/auth/logout")  Logout
+
+        div.container 
+            //- Aca es donde se pondra cada contenido de cada pagina
+            block content
