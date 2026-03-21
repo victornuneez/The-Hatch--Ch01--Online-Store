@@ -1,6 +1,5 @@
 import Admin from '../models/adminCollection.js';
 import bcrypt from 'bcrypt';
-import session from 'express-session';
 import { ADMIN_CODE, SALT } from '../config.js';
 
 
@@ -41,22 +40,24 @@ const login = async (req, res) => {
         const user = await Admin.findOne({ email : email })
 
         if(!user) {
-            return res.status(404).json({ message: "Usuario no encontrado"});
+            return res.render('admin/login',{ error: "Usuario no encontrado"});
         }
 
         const matchPassword = await bcrypt.compare(password, user.password);
 
         if(!matchPassword) {
-            return res.status(401).json({ message: "Datos invalidos"});
+            return res.render('admin/login', { error: "Datos invalidos"});
         }
 
+        // Guardamos el ID y el ROLE en la sesion, una vez que se logueo el usuario
         req.session.adminId = user._id;
         req.session.role = user.role;
 
-        res.status(200).json({ message: "Inicio de sesion exitoso", role: user.role });
+        // Si inicio correctamente la sesion lo enviamos a ver los pedidos
+        res.redirect('/api/orders');
         
     } catch (error) {
-        res.status(500).json({ message: "Error al iniciar sesion", error: error.message });
+        res.status(500).render('admin/login', { error: error.message });
     }
 };
 
@@ -66,11 +67,11 @@ const logout = (req, res) => {
         req.session.destroy((error) => {
             
             if (error) {
-                return res.status(500).json({ message: "Error al cerrar sesion", error: error.message });
+                return res.status(500).send("Error al cerrar sesion");
             }
 
             res.clearCookie('connect.sid');
-            res.status(200).json({ message: 'Sesion cerrada exitosamente'});
+            res.redirect('/auth/login');
         })
 
         

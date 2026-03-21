@@ -10,18 +10,22 @@ const createProduct = async (req, res) => {
 
         // Realizamos una accion si se cumple
         if (existingProduct) {
-            return res.status(400).json({ message: "Ya existe un producto con ese nombre, prueba otro"})
+            // Buscamos los productos actuales para que la lista no aparezca vacia.
+            const products = await Product.find();
+            return res.render('admin/products', { products: products, error: "Ya existe un producto con ese nombre, prueba otro" })
         }
 
         const newProduct = new Product ({ name, description, price, stock, imgURL });
-        const savedProduct = await newProduct.save();
+        await newProduct.save();
 
-        res.status(201).json({message:"Producto creado exitosamente", savedProduct});
+        // Todo salio bien, refrescamos la lista.
+        res.redirect('/api/products');
 
     } catch (error) {
-        res.status(400).json({
-            message: "Error al crear el producto",
-            error: error.message
+        const products = await Product.find();
+        res.render('admin/products', {
+            products: products,
+            error: "Error al crear el producto" + error.message
         });
     }  
 };
@@ -32,10 +36,10 @@ const getProducts = async (req, res) => {
         // Traemos todos los documentos existentes
         const products = await Product.find();
 
-        res.status(200).json({ message: "Lista de Productos", list: products });
+        res.render('admin/products', { products: products });
 
     } catch (error) {
-        res.status(500).json({ message: "Error al obtener los productos", error: error.message });
+        res.status(500).send("Error al obtener los productos" + error.message);
     }
 };
 
@@ -47,13 +51,15 @@ const getProductById = async (req, res) => {
 
         // Capturamos el caso de que no exista el producto solicitado
         if (!product) {
-            return res.status(404).json({ message: "Producto no encontrado"})
+            const products = await Product.find();
+            return res.render('admin/products', { products, error: "Producto no encontrado"})
         }
 
-        res.status(200).json({ message: "Producto encontrado", item: product });
+        // Renderizamos la vista a la edicion de productos
+        res.render('admin/editProduct', { product: product })
     
     } catch (error) {
-        res.status(500).json({ message: "Error al obtener el producto", error: error.message });
+        res.status(500).send("Error al obtener el producto" + error.message);
     }
 };
 
@@ -69,13 +75,14 @@ const updateProductById = async (req, res) => {
         const updatedProduct = await Product.findByIdAndUpdate(id, dataToUpdate, {returnDocument : 'after'})
 
         if (!updatedProduct) {
-            return res.status(404).json({ message: "Producto no encontrado para actualizar"});
+            return res.status(404).send("Producto no encontrado para actualizar");
         }
 
-        res.status(200).json({ message: "Producto actualizado correctamente", item: updatedProduct});
+        // Una vez hechos los cambios redireccionamos a la lista de productos
+        res.redirect('/api/products');
     
     } catch (error) {
-        res.status(500).json({ message: "Hubo un error al actualizar", error: error.message });
+        res.status(500).send("Hubo un error al actualizar" + error.message);
     }
 };
 
@@ -86,13 +93,16 @@ const deleteProductById = async (req, res) => {
         const deleteProduct = await Product.findByIdAndDelete(id);
 
         if (!deleteProduct) {
-            return res.status(404).json({ message: "Producto no encontrado para eliminar"});
+            const products = await Product.find();
+            return res.render('admin/products', {products: products, error: "Producto no encontrado para eliminar"});
         }
 
-        res.status(200).json({ message: "Producto eliminado correctamente"});
+        // redireccionamos a la lista de productos para ver los cambios.
+        res.redirect('/api/products');
     
     } catch (error) {
-        res.status(500).json({ message: "Error al eliminar el producto", error: error.message})
+        const products = await Product.find();
+        res.render('admin/products', {products: products, error: "Error al eliminar el producto" + error.message})
     }
 }
 
