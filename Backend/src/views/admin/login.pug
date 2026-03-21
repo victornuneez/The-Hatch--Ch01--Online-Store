@@ -1,0 +1,14 @@
+extends layout 
+
+block content 
+    section.login-container 
+        .login-box 
+            h2 Login 
+            form(action="/auth/login" method="POST")
+                div 
+                    label(for="email") Email: 
+                    input(type="email" id="email" name="email" placeholder="Escribe tu email" required)
+                div 
+                    label(for="password") Password: 
+                    input(type="password" id="password" name="password" placeholder="Escribe tu contrasenha" required)
+                button(type="submit") Login
