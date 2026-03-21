@@ -1,0 +1,24 @@
+extends layout 
+
+block content
+
+    h1 Edit Product 
+    
+    //- Usamos la rutas para actualizar los productos por ID. 
+    form(action=`/api/products/${product._id}?_method=PUT` method="POST")
+
+        div 
+            label Name: 
+            //- Mostramos con el value el valor que queremos editar.
+            input(type="text" name="name" value=product.name required)
+
+        div 
+            label Price($):
+            input(type="number" name="price" value=product.price required)
+
+        div 
+            label Stock:
+            input(type="number" name="stock" value=product.stock required)
+
+
+        button(type="submit") Save Changes
