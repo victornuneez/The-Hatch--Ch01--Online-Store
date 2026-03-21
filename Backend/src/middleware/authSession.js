@@ -1,9 +1,6 @@
 import Admin from "../models/adminCollection.js";
 
 const sessionVerify = async (req, res, next) => {
-    console.log("--- NUEVA PETICIÓN ---");
-    console.log("Cookie recibida:", req.headers.cookie); // Ver si llega la cookie
-    console.log("ID en Sesión:", req.session.adminId);   // Ver si Express la reconoce
     
     try {
         if(!req.session || !req.session.adminId) {
