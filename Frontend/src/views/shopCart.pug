@@ -1,0 +1,36 @@
+extends layout 
+block content 
+    h1 Shopping Car     
+    //-Verificamos si hay productos
+    if products && products.length > 0
+        ul 
+            //- Recorremos los productos
+            each product in products 
+                li 
+                    | Product: #{product.name} - Price: $#{product.price}
+
+        h3 Total: $#{total}
+        hr 
+
+        form(action="/confirm-order", method="POST")
+            //- Campo oculto, enviamos el ID del  producto para saber que producto se esta comprando.
+            //- Usamos products para obtener el id, ya que es una lista de un solo elemnto.
+            input(type="hidden", name="productId", value=products[0]._id)
+
+            p Full Name: 
+            input(type="text", name="buyer_name", placeholder="Your Name", required=true)
+
+            p Email: 
+            input(type="email", name="email", placeholder="example@gmail.com", required=true)
+
+            p Address: 
+            textarea(name="address", placeholder="Calle Avd. Sacramento 123", required=true)
+            
+            br
+            br
+            button(type="submit") Confirm Order 
+
+    else 
+    //- Si no hay nada el carrito esta vacio
+    p Empty Shopping Car 
+    a(href="/") Back to store
