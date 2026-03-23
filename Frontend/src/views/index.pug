@@ -1,0 +1,17 @@
+extends layout 
+
+block content 
+    .title 
+        h1 Lista de Productos 
+
+    .products-container 
+        each product in products
+            .product 
+                img(src=product.imgURL, alt=product.name)
+                h3= product.name 
+                p Description: #{product.description}
+                p Price: $#{product.price}
+
+                form(action="/shop-car", method="POST")
+                    input(type="hidden", name="id", value=product._id)
+                    button(type="Submit") Buy Now
