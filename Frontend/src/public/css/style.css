@@ -1,0 +1,36 @@
+
+/* */
+body {
+    /*Tipo de letra que se va a usar en la pagina(ARIAL)*/
+    font-family: Arial, sans-serif;
+    /*Define el color de fondo de toda la pagina*/
+    background-color: #f0f8ff;
+    /*Eliminamos el margen por defecto de la pagina*/
+    margin: 0;
+    /*Crea espacio interno desde los bordes hacia adentro*/
+    padding: 20px;
+}
+
+/* Para que los productos salgan uno al lado del otro */
+.products-container {
+    display: flex;          /*Esto los pone en fila*/
+    flex-wrap: wrap;       /* Si no caben en una fila, saltan a la siguiente abajo */
+    gap: 20px;            /* Espacio de separación entre cada producto */
+    justify-content: center; /* Centra los productos en la pantalla (opcional) */
+    padding: 20px;
+}
+
+/* El cuadrito de cada producto */
+.product {
+    border: 1px solid black; /* Una simple línea negra */
+    padding: 10px;
+    width: 200px;
+}
+
+/*Que la imagen no se salga del cuadrito */
+.product img {
+    width: 100%;        /* Ocupa el 100% del ancho del div .producto (200px) */
+    height: 150px;      /* Le damos una altura fija para que todas sean iguales */
+    object-fit: cover;  /* Recorta la imagen para que encaje sin estirarse */
+    display: block;     /* Elimina espacios extraños debajo de la imagen */
+}
