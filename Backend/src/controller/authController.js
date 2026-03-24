@@ -1,7 +1,8 @@
 import Admin from '../models/adminCollection.js';
 import bcrypt from 'bcrypt';
-import { ADMIN_CODE, SALT } from '../config.js';
 
+const ADMIN_CODE = process.env.ADMIN_CODE;
+const SALT = process.env.SALT;
 
 const register = async (req, res) => {
     try {
@@ -53,6 +54,7 @@ const login = async (req, res) => {
         req.session.adminId = user._id;
         req.session.role = user.role;
 
+
         // Si inicio correctamente la sesion lo enviamos a ver los pedidos
         res.redirect('/api/orders');
         
@@ -60,6 +62,15 @@ const login = async (req, res) => {
         res.status(500).render('admin/login', { error: error.message });
     }
 };
+
+const viewLogin = (req, res) => {
+    try {
+        res.render('admin/login');
+        
+    } catch (error) {
+        res.status(500).render('admin/login', { error: error.message });
+    }
+}
 
 
 const logout = (req, res) => {
@@ -80,4 +91,4 @@ const logout = (req, res) => {
     }
 };
 
-export { register, login, logout }
+export { register, login, viewLogin, logout }
