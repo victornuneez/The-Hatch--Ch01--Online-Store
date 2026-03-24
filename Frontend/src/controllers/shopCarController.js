@@ -29,13 +29,13 @@ const shopCart = async (req, res) => {
 const confirmOrder = async (req, res) => {
     try {
         // Extraemos los datos que vienen del formulario del carrito.
-        const { productId, buyer_name, email, address } = req.body;
+        const { productId, buyer_name, email, address, payment_method } = req.body;
 
         // Buscamos el producto en la DB, por seguridad para confirmar el precio y nombre del producto.
         const productData = await Product.findById(productId).lean();
 
         if (!productData) {
-            return res.satus(404).send('El producto ya no esta disponible');
+            return res.status(404).send('El producto ya no esta disponible');
         }
 
         const itemInfo = { 
@@ -47,7 +47,7 @@ const confirmOrder = async (req, res) => {
         };
 
         // El status ya no lo ponemos porque por default se pone en New
-        const newOrder = new Order({ items: [itemInfo], total: itemInfo.subtotal, buyer_name: buyer_name, address: address, email: email });
+        const newOrder = new Order({ items: [itemInfo], total: itemInfo.subtotal, buyer_name: buyer_name, address: address, email: email, payment_method: payment_method });
 
         // Guardamos en la DB la orden de compra.
         await newOrder.save();
