@@ -1,13 +1,24 @@
+import dotenv from 'dotenv';
 import express from 'express';
-import mongoose from 'mongoose';
 import productRoutes from './routes/productsRoutes.js';
 import adminRoutes from './routes/adminroutes.js';
-import { PORT, DB_URI } from './config.js';
-import { createSession } from './middleware/session.js';
 import orderRoutes from './routes/ordersRoutes.js';
 import methodoverride from 'method-override';
+import { createSession } from './middleware/session.js';
+import { connectDB } from './config.js';
+import { fileURLToPath} from 'url';
+import path from 'path';
+import morgan from 'morgan';
+
+
+dotenv.config();
+const PORT = process.env.PORT
 
 const app = express();
+connectDB();
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 // Le decimos a express en donde estan las vistas(Carpeta)
 app.set('views', './views');
@@ -15,6 +26,8 @@ app.set('views', './views');
 // Le decimos que el motor de renderizado es Pug
 app.set('view engine', 'pug');
 
+
+app.use(express.static(path.join(__dirname, 'public'))); // ✅
 
 // middleware que traduce al servidor los archivos JSON
 app.use(express.json());
@@ -26,17 +39,12 @@ app.use(methodoverride('_method'));
 
 // Usamos sessiones para guardar la sesion del usuario.
 app.use(createSession)
+app.use(morgan('dev'));
 
 // Asignamos las rutas del servidor.
 app.use('/api/products', productRoutes);
 app.use('/auth', adminRoutes);
 app.use('/api/orders', orderRoutes);
-
-
-// Conectamos nuestro servidor a la base de datos
-mongoose.connect(DB_URI)
-    .then(() => console.log('Conexion exitosa a MongoDB'))
-    .catch((error) => console.log('Error al conectar a MongoDB:', error))
 
 
 app.listen(PORT, () => {
