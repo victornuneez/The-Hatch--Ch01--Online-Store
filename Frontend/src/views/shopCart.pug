@@ -25,12 +25,15 @@ block content
 
             p Address: 
             textarea(name="address", placeholder="Calle Avd. Sacramento 123", required=true)
+
+            p Payment Method : 
+            input(type="text", name="payment_method", placeholder="Solo efectivo", required=true)
             
             br
             br
             button(type="submit") Confirm Order 
 
     else 
-    //- Si no hay nada el carrito esta vacio
-    p Empty Shopping Car 
-    a(href="/") Back to store
+        //- Si no hay nada el carrito esta vacio
+        p Empty Shopping Car 
+        a(href="/") Back to store
