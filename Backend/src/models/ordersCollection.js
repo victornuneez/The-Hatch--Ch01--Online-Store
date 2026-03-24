@@ -13,8 +13,7 @@ const purchaseHistorySchema = new mongoose.Schema({
     // Guardamos la cantidad y subtotal al momento de realzar la compra
     quantity: { type: Number, required: true, min: 1 },
     subtotal: { type: Number, required: true, min: 0 }
-
-    // No necesita un id, porque ira en el esquema dentro de orders como un campo.(ID de orders lo identificara al pedido completo)
+    // No queremos tener el id del item.
 }, { _id: false });
 
 
@@ -31,6 +30,7 @@ const orderSchema = new mongoose.Schema({
     buyer_name: { type: String, required: true, trim: true },
     address: { type: String, required: true },
     email: { type: String, required: true, lowercase: true, trim: true },
+    payment_method: { type: String, required: true, trim: true },
     
     // Estados de los pedidos 
     status: { type: String, enum: ['new', 'preparing', 'on_the_way', 'delivered'], default: 'new' }
