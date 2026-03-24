@@ -4,7 +4,7 @@ block content
     
     //- Condicional para capturar los errores, y lo visualicemos.
     if error
-    p(style="color: red; font-weight: bold;") #{error}
+        p(style="color: red; font-weight: bold;") #{error}
 
     //- Definimos el formulario
     form(action="/api/products" method="POST")
@@ -38,23 +38,24 @@ block content
         button(type="submit") Add Product
 
 
-    //- Creamos una lista desordenada
-    ul 
-        //- Mostramos todos los productos que tenemos en la DB en una lista.
+    .products-container
         each product in products
-            
-            li
+            .product
+                img(src=product.imgURL, alt=product.name)
                 h3= product.name
                 p Description: #{product.description}
                 p Price: $#{product.price}
                 p Stock: #{product.stock} units
+                p Status: #{product.is_active ? 'Active' : 'Inactive'}
 
-                //- Enlace a la pestanha de editar
-                a(href=`/api/products/edit/${product._id}`) Edit 
+                form(action=`/api/products/edit/${product._id}` method="GET" style="display:inline")
+                    button(type="submit") Edit
 
-                //- boton para eliminar un producto.
                 form(action=`/api/products/${product._id}?_method=DELETE`, method="POST" style="display:inline")
                     button(type="submit") Delete
+
+                form(action=`/api/products/${product._id}/status?_method=PATCH`, method="POST" style="display:inline")
+                    button(type="submit")= product.is_active ? 'Inactive' : 'Active'
 
     //- Creamos un contenedor para los botones de navegacion
     div.navigation-admin 
