@@ -86,6 +86,28 @@ const updateProductById = async (req, res) => {
     }
 };
 
+const updateStatusProduct = async (req, res) => {
+    try{
+        const { id } = req.params;
+        const product = await Product.findById(id);
+
+        if (!product) {
+            const products = await Product.find();
+            return res.render('admin/products', { products, error: "Producto no encontrado" });
+        }
+
+        // Invertimos el valor actual
+        product.is_active = !product.is_active;
+        await product.save();
+
+        res.redirect('/api/products');
+
+    } catch (error) {
+        const products = await Product.find();
+        res.render('admin/products', { products, error: "Error al cambiar estado" + error.message });
+    }
+}
+
 
 const deleteProductById = async (req, res) => {
     try {
@@ -106,4 +128,4 @@ const deleteProductById = async (req, res) => {
     }
 }
 
-export { createProduct, getProducts, getProductById, updateProductById, deleteProductById }
+export { createProduct, getProducts, getProductById, updateProductById, updateStatusProduct, deleteProductById }
