@@ -1,9 +1,9 @@
 extends layout 
 
 block content
-    h1 Panel de Administracion 
+    h1 Administration Panel
     div.contenedor-pedidos 
-        h2 Lista de Pedidos Recientes 
+        h2 Orders List
             
         //- table le pide al navegador hacer una tabla
         table 
@@ -11,19 +11,21 @@ block content
                 //- Realiza una fila (table row)
                 tr 
                     //- th(table header) se ponen en negrita sola
-                    th Cliente 
-                    th Direccion 
+                    th Client 
+                    th Address
                     th Total 
-                    th Estado 
-                    th Accion
+                    th Status
+                    th Payment Method 
+                    th Action
             tbody 
                 each order in orders
                     //- Aca iran los pedidos
                     tr 
                         td= order.buyer_name  
                         td= order.address  
-                        td order.$#{order.total}  
-                        td= order.status  
+                        td $#{order.total}  
+                        td= order.status
+                        td= order.payment_method  
                         td 
                             //- Formulario para cambiar el estado del pedido
                             form(action=`/api/orders/${order._id}/status?_method=PUT` method="POST")
@@ -33,4 +35,4 @@ block content
                                     option(value="on_the_way") On the way
                                     option(value="delivered") Delivered
                                     //- Envia la actualizacion de estado.
-                                button(type="submit")
+                                button(type="submit") Update
