@@ -1,0 +1,59 @@
+# Este archivo sirve para definir y levantar varios contenedores de Docker juntos
+
+version: '3.8'
+
+services: 
+
+
+  # =======
+  # BACKEND
+  # =======
+
+  # Nombre del servicio(Contenedor)
+  backend: 
+    # Le dice a Docker que construya la imagen usando el Dockerfile que esta en el carpeta ./backend
+    build: ./Backend/src
+    container_name: backend
+    ports: 
+      - "3000:3000"
+    # Variables de entorno que la app necesita usar.
+    environment: 
+      PORT: ${PORT_BACKEND}
+      DB_URI: ${DB_URI}
+      ADMIN_CODE: ${ADMIN_CODE}
+      SALT: ${SALT}
+      SESSION_KEY: ${SESSION_KEY}
+    # Conectamos este contenedor a la misma red que Mongo, asi el backend puede conectarse y comunicarse con Mongo usando mongodb
+    networks:
+      - app-network
+    # Conectamos el codigo local con el contenedor, Docker toma todo lo que esta en nuestro archivo local y lo pone dentro del contenedor app.
+    # Cualquier cambio que hagamos en el codigo se actualizara tambien en el contenedor
+    volumes:
+      - ./Backend/src:/app
+      # volumen anonimo que protege los node_modules de ser sobreescritos.
+      - /app/node_modules
+    
+
+  # FRONTEND
+
+  frontend: 
+    build: ./Frontend/src
+    container_name: frontend 
+    ports:
+      - "4000:4000"
+    environment:
+      PORT: ${PORT_FRONTEND}
+      DB_URI: ${DB_URI}
+    networks: 
+      - app-network
+    volumes:
+      - ./Frontend/src:/app
+      - /app/node_modules
+
+
+networks:
+  # Nombre de la red que usan los contenedores
+  app-network:
+    # Tipo de la red, es una red privada interna donde los contenedores pueden hablar entre si usando sus nombres en vez de IPs.
+    driver: bridge
+
