@@ -8,20 +8,20 @@ block content
     form(action=`/api/products/${product._id}?_method=PUT` method="POST")
 
         div 
-            label Name: 
+            label(for="name") Name: 
             //- Mostramos con el value el valor que queremos editar.
-            input(type="text" name="name" value=product.name required)
+            input(type="text" id="name" name="name" value=product.name required)
         div
-            label Description: 
-            input(type="text" name="description" value=product.description required)
+            label(for="description") Description: 
+            input(type="text" id="description" name="description" value=product.description required)
 
         div 
-            label Price($):
-            input(type="number" name="price" value=product.price required)
+            label(for="price") Price($):
+            input(type="number" id="price" name="price" value=product.price required)
 
         div 
-            label Stock:
-            input(type="number" name="stock" value=product.stock required)
+            label(for="stock") Stock:
+            input(type="number" id="stock" name="stock" value=product.stock required)
 
 
         button(type="submit") Save Changes
