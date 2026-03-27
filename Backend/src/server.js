@@ -6,9 +6,9 @@ import orderRoutes from './routes/ordersRoutes.js';
 import methodoverride from 'method-override';
 import { createSession } from './middleware/session.js';
 import { connectDB } from './config.js';
-import { fileURLToPath} from 'url';
-import path from 'path';
-import morgan from 'morgan';
+import { fileURLToPath} from 'url'; // funcion que convierte uns URL a una ruta de sistema
+import path from 'path'; // herramienta para manejar rutas de archivos sin importar el Os
+import morgan from 'morgan'; // logs de peticiones
 
 
 dotenv.config();
@@ -17,6 +17,7 @@ const PORT = process.env.PORT
 const app = express();
 connectDB();
 
+// Obtenemos la ruta absoluta de la carpeta donde esta server, sirve para que el servidor pueda acceder a los demas archivos
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -26,8 +27,8 @@ app.set('views', './views');
 // Le decimos que el motor de renderizado es Pug
 app.set('view engine', 'pug');
 
-
-app.use(express.static(path.join(__dirname, 'public'))); // ✅
+// servimos los archivos estaticos al navegador.
+app.use(express.static(path.join(__dirname, 'public'))); 
 
 // middleware que traduce al servidor los archivos JSON
 app.use(express.json());
@@ -39,9 +40,10 @@ app.use(methodoverride('_method'));
 
 // Usamos sessiones para guardar la sesion del usuario.
 app.use(createSession)
+// log de peticiones
 app.use(morgan('dev'));
 
-// Asignamos las rutas del servidor.
+// RUTAS del servidor.
 app.use('/api/products', productRoutes);
 app.use('/auth', adminRoutes);
 app.use('/api/orders', orderRoutes);
