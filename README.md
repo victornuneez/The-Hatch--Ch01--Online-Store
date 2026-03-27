@@ -39,7 +39,7 @@ Una tienda online full-stack con panel de administración, construida con Node.j
 │               └── editProduct.pug
 │
 ├── Frontend/
-│   └── src/                  # Tienda Online (El iglú del pingüino)
+│   └── src/                  # Tienda Online
 │       ├── server.js
 │       ├── config.js
 │       ├── routes/
