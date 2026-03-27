@@ -7,9 +7,15 @@ html(lang="es")
     body 
         //- Este menu aparecera en todas las paginas automaticamente
         nav 
-            a(href="/api/orders") Orders
-            a(href="/api/products") Products
-            a(href="/auth/logout")  Logout
+            
+            form(action="/api/orders" method="GET" style="display: inline;")
+                button(type="submit") Orders
+            
+            form(action="/api/products" method="GET" style="display: inline;")
+                button(type="submit") Products
+            //- Formulario para cerrar sesion
+            form(action="/auth/logout" method="POST" style="display: inline;")
+                button(type="submit") Logout
 
         div.container 
             //- Aca es donde se pondra cada contenido de cada pagina
