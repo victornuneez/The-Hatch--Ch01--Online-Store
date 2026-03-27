@@ -7,7 +7,7 @@ import MongoStore from 'connect-mongo';
 
 const SESSION_KEY = process.env.SESSION_KEY;
 const DB_URI = process.env.DB_URI;
-console.log(DB_URI)
+
 
 const createSession = session({
     secret: SESSION_KEY,          // clave secreta que firma la session para que nadie la falsifique
@@ -25,8 +25,9 @@ const createSession = session({
     cookie: {
         httpOnly: true,          // El navegador no puede leer la cookie
         maxAge: 3600000,          // La sesion dura 1 hora
-        secure: false,
-        sameSite: 'lax'
+        secure: false,             // en modo de desarollo permite que la cookie viaje por HTTP
+        sameSite: 'lax'           // Bloquea el envio de la cookie si una web externa intenta hacer una peticion
+                                    // (POST, DELETE, PUT)
     }
 });
 
